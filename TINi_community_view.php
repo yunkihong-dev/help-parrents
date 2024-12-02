@@ -2,9 +2,7 @@
 	include 'config/db.php';
 	session_start();
 
-
 	$userid = $_SESSION['userid'];
-
 	$id = $_GET["id"]; // URL 파라미터에서 가져온 id
 	$page = $_GET["page"];
 
@@ -34,6 +32,16 @@
 	$stmt = $conn->prepare($sql);
 	$stmt->bind_param("ii", $new_hit, $id);
 	$stmt->execute();
+
+	// 댓글 조회
+	$comment_sql = "SELECT c.content, c.reg_date, u.user_nickname
+                    FROM tbl_board_comment c
+                    JOIN tbl_user u ON c.user_id = u.id
+                    WHERE c.board_id = ? ORDER BY c.reg_date DESC";
+	$comment_stmt = $conn->prepare($comment_sql);
+	$comment_stmt->bind_param("i", $id);
+	$comment_stmt->execute();
+	$comment_result = $comment_stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -63,6 +71,28 @@
                 <div class="content"><?=$content?></div>
             </li>
         </ul>
+
+        <!-- 댓글 작성 폼 -->
+        <div id="comment_section">
+            <h4>댓글 작성</h4>
+            <form action="board_comment_insert.php" method="post">
+                <textarea name="comment" rows="4" style="width: 100%;" placeholder="댓글을 작성하세요"></textarea>
+                <input type="hidden" name="board_id" value="<?=$id?>">
+                <button type="submit" class="letter-button">댓글 작성</button>
+            </form>
+        </div>
+
+        <!-- 댓글 목록 -->
+        <div id="comments">
+            <h4>댓글 목록</h4>
+            <?php while($comment = $comment_result->fetch_assoc()): ?>
+                <div class="comment">
+                    <p><strong><?=$comment['user_nickname']?>:</strong> <?=$comment['content']?></p>
+                    <span class="comment-date"><?=$comment['reg_date']?></span>
+                </div>
+            <?php endwhile; ?>
+        </div>
+
         <ul class="buttons">
             <li>
                 <?php 
@@ -83,4 +113,4 @@
 </footer>
 </body>
 <script src="./js/modal.js"></script>
-</html> 
+</html>

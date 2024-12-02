@@ -18,8 +18,8 @@ CREATE TABLE tbl_tiniping (
     tini_disliked_food VARCHAR(50) NOT NULL,
     tini_item VARCHAR(80) NOT NULL
 );
-
 select * from tbl_tiniping;
+
 
 INSERT INTO tbl_tiniping
 (tini_name, 
@@ -220,9 +220,12 @@ CREATE TABLE tbl_goods_comment (
     content VARCHAR(20) NOT NULL,
     goods_id INT NOT NULL,
     user_id INT NOT NULL,
+	reg_date date not null,
     FOREIGN KEY (goods_id) REFERENCES tini_goods_info(id),
     FOREIGN KEY (user_id) REFERENCES tbl_user(id)
 );
+
+drop table tbl_goods_comment;
 
 -- tbl_board 테이블 생성
 CREATE TABLE tbl_board (
@@ -266,10 +269,11 @@ CREATE TABLE tbl_opinion_comment (
     content VARCHAR(20) NOT NULL,
     opinion_id INT NOT NULL,
     user_id INT NOT NULL,
+	reg_date date not null,
     FOREIGN KEY (opinion_id) REFERENCES tbl_opinion(id),
     FOREIGN KEY (user_id) REFERENCES tbl_user(id)
 );
-
+drop table tbl_opinion_comment;
 create table tbl_notice(
 	id int not null auto_increment primary key,
 	title varchar(100) not null,
@@ -279,4 +283,3 @@ create table tbl_notice(
 	hit int not null,
 	foreign key (user_id) references tbl_user(id)
 );
-

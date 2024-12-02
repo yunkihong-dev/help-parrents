@@ -17,4 +17,5 @@
     <?php include "TINi_footer.php";?>
 </footer>
 </body>
+<script src="./js/modal.js"></script>
 </html>

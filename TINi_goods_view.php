@@ -2,7 +2,7 @@
     include 'config/db.php';
     session_start();
 
-    $userid = $_SESSION['userid'];
+    $userid = $_SESSION['id'];
 
     $id = $_GET["id"]; // URL 파라미터에서 가져온 id
     $page = $_GET["page"];
@@ -36,7 +36,6 @@
     $stmt->bind_param("ii", $new_hit, $id);
     $stmt->execute();
 ?>
-
 <!DOCTYPE html>
 <html>
 <head> 
@@ -85,6 +84,36 @@
             </li>
             <li ><a class="letter-button" onclick="history.back();">뒤로가기</a></li>
         </ul>
+           <!-- 댓글 작성 폼 -->
+           <div id="comment_section">
+            <h4>댓글 작성</h4>
+            <form action="goods_comment_insert.php" method="POST">
+                <textarea name="comment" placeholder="댓글을 작성해주세요" required></textarea><br>
+                <input type="hidden" name="goods_id" value="<?=$id?>">
+                <button type="submit" class="letter-button">댓글 작성</button>
+            </form>
+        </div>
+
+        <!-- 댓글 목록 -->
+        <div id="comments">
+            <?php
+            // 댓글 조회
+            $comment_sql = "SELECT c.content, c.reg_date, u.user_nickname 
+                            FROM tbl_goods_comment c
+                            JOIN tbl_user u ON c.user_id = u.id
+                            WHERE c.goods_id = ? ORDER BY c.reg_date DESC";
+            $stmt = $conn->prepare($comment_sql);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $comment_result = $stmt->get_result();
+
+            while ($comment_row = $comment_result->fetch_array()) {
+                echo "<div class='comment'>
+                        <p><b>".$comment_row['user_nickname']."</b> : ".$comment_row['content']."</p>
+                        <span class='comment-date'>".$comment_row['reg_date']."</span>
+                      </div>";
+            }
+            ?>
     </div> <!-- board_box -->
 </section> 
 <footer>
@@ -95,64 +124,55 @@
 <script src="./js/modal.js"></script>
 
 <script>
-    window.onload = function() {
-        // 카카오맵 로드 후 실행
-        if (window.kakao && window.kakao.maps) {
-            // 카카오맵 초기화 및 마커 표시
-            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-                mapOption = {
-                    center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 서울 위치 (위도, 경도)
-                    level: 3 // 지도의 확대 수준
-                };
+    // 카카오맵 API 로딩이 완료된 후 실행할 함수를 설정합니다.
+    kakao.maps.load(function() {
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 위치 (위도, 경도)
+                level: 3 // 지도의 확대 수준
+            };
 
-            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도 생성
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도 생성
 
-            // 장소 검색 객체를 생성합니다
-            var ps = new kakao.maps.services.Places(); 
+        // 장소 검색 객체를 생성합니다
+        var ps = new kakao.maps.services.Places(); 
 
-            // 키워드로 장소를 검색합니다
-            ps.keywordSearch('<?=$place_name?>', placesSearchCB); 
+        // 키워드로 장소를 검색합니다
+        ps.keywordSearch('<?=$place_name?>', placesSearchCB); 
 
-            // 키워드 검색 완료 시 호출되는 콜백함수입니다
-            function placesSearchCB (data, status, pagination) {
-                if (status === kakao.maps.services.Status.OK) {
+        // 키워드 검색 완료 시 호출되는 콜백함수입니다
+        function placesSearchCB (data, status, pagination) {
+            if (status === kakao.maps.services.Status.OK) {
+                // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+                // LatLngBounds 객체에 좌표를 추가합니다
+                var bounds = new kakao.maps.LatLngBounds();
 
-                    // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-                    // LatLngBounds 객체에 좌표를 추가합니다
-                    var bounds = new kakao.maps.LatLngBounds();
+                for (var i = 0; i < data.length; i++) {
+                    displayMarker(data[i]);    
+                    bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+                }       
 
-                    for (var i=0; i<data.length; i++) {
-                        displayMarker(data[i]);    
-                        bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-                    }       
-
-                    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-                    map.setBounds(bounds);
-                } 
-            }
-
-            // 지도에 마커를 표시하는 함수입니다
-            function displayMarker(place) {
-                
-                // 마커를 생성하고 지도에 표시합니다
-                var marker = new kakao.maps.Marker({
-                    map: map,
-                    position: new kakao.maps.LatLng(place.y, place.x) 
-                });
-
-                // 마커에 클릭이벤트를 등록합니다
-                kakao.maps.event.addListener(marker, 'click', function() {
-                    // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-                    var infowindow = new kakao.maps.InfoWindow({
-                        content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>'
-                    });
-                    infowindow.open(map, marker);
-                });
-            }
-        } else {
-            alert('카카오맵 API 로드에 실패했습니다.');
+                // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+                map.setBounds(bounds);
+            } 
         }
-    }
+
+        // 지도에 마커를 표시하는 함수입니다
+        function displayMarker(place) {
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(place.y, place.x) 
+            });
+
+            // 마커에 클릭이벤트를 등록합니다
+            kakao.maps.event.addListener(marker, 'click', function() {
+                var infowindow = new kakao.maps.InfoWindow({
+                    content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>'
+                });
+                infowindow.open(map, marker);
+            });
+        }
+    });
 </script>
 
 </html>
