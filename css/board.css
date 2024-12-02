@@ -1,0 +1,155 @@
+
+#board_box { position: relative; width: 800px; margin: 0 auto; }
+#board_box h3 { margin-top: 30px;	padding: 10px; border-bottom: solid 2px #516e7f; font-size: 30px; }
+#board_form span { display: inline-block; }
+#board_form .col1 { width: 150px; }
+#board_form li {	padding: 12px; border-bottom: solid 1px #dddddd; list-style: none;}
+#board_form input { width: 500px; height: 25px; }
+#board_form textarea{
+    width: 100%;
+    height: auto; 
+}
+
+#board_form #text_area {	position: relative;	height: 400px; }
+#board_form #text_area .col1 { position: absolute; top: 10px; }
+#board_form #text_area .col2 { position: absolute; left: 166px; }
+#board_box .buttons { text-align: right; margin: 20px 0 40px 0;}
+#board_box .buttons li { display: inline; }
+#board_box .buttons img { padding: 5px 5px; width: 50px; }
+.note-editable{ max-height: 300px;}
+
+/* 게시판 목록보기(board_list.php) */
+/* 기존 CSS 그대로 두고, 새로 추가된 스타일만 아래에 추가 */
+
+/* TiniPing 선택 버튼 스타일 */
+#tiniping_buttons {
+    margin: 20px 0;
+    position: absolute;
+    width: 100px;
+    left: 80px;
+    align-items: center;
+}
+
+#tiniping_buttons button {
+    margin-right: 10px;
+    margin-top:10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    display: block;
+    
+}
+
+#tiniping_buttons button:hover {
+    background-color: #d8d8d8;
+}
+
+/* 선택된 버튼 스타일 */
+#tiniping_buttons button.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 게시글 리스트의 각 항목 스타일 */
+#board_list li {
+    padding: 10px 0;
+    border-bottom: solid 1px #ddd;
+    list-style: none;
+}
+
+#board_list span {
+    display: inline-block;
+    text-align: center;
+}
+
+#board_list .col1 { width: 80px; }
+#board_list .col2 { width: 340px; text-align: left; }
+#board_list .col3 { width: 110px; }
+#board_list .col4 { width: 60px; }
+#board_list .col5 { width: 130px; }
+#board_list .col6 { width: 40px; }
+
+#page_num {
+    text-align: center;
+    margin: 30px 0;
+}
+
+#page_num li {
+    display: inline;
+}
+
+#page_num a {
+    text-decoration: none;
+}
+
+#page_num li a:hover {
+    color: #007bff;
+}
+/* 게시판 내용보기(board_view.php) */
+#board_box { width: 800px; margin: 0 auto; }
+#board_box .title { margin-top: 30px; padding: 10px; border-bottom: solid 2px #516e7f; font-size: 30px; }
+#view_content li:nth-child(1) {	padding: 15px; border-bottom: solid 1px #aaaaaa; }
+#view_content li{ list-style: none;}
+#view_content .col2 { float: right; }
+#view_content li:nth-child(2) {	padding: 15px 15px 80px 15px; border-bottom: solid 1px #cccccc; }
+#view_content li:nth-child(3) button { padding: 5px 20px; margin: 15px 0 40px 720px; cursor: pointer; }
+
+
+.letter-button{
+    border: 1px solid black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: white;
+}
+.letter-button:hover{
+    background-color: #aaaaaa;
+}
+.tini_button{
+    background-color: transparent;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+.tini_button.selected {
+    background-color: #ff9900;
+    color: #fff;
+  }
+
+  .tini_info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.tini_image_container {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.tini_image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.tini_info_content {
+    flex: 1;
+    display: none; /* 처음에는 정보 숨김 */
+}
+
+.tini_info h4 {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.tini_info p {
+    margin: 5px 0;
+    font-size: 14px;
+}

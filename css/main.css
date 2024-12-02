@@ -1,0 +1,90 @@
+#main_content{
+    margin:20px 0;
+}
+#notice{
+    width: 500px;
+    margin: 20px;
+}
+#notice div { 
+    width: 490px;
+    font-size: 19px;
+    padding-bottom: 5px;
+    border-bottom: solid 1px #dddddd;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+#notice ul {
+    margin-top: 20px; 
+}
+#notice li { 
+    margin-top: 8px; 
+    margin-left: 10px; 
+    display: flex;
+    justify-content: space-between;
+}
+#notice span { 
+    display: inline-block; 
+}
+.row_container{
+    display: flex;
+    justify-content: center;
+}
+
+.banner-container {
+    width: 598px; /* 배너 하나의 너비 */
+    overflow: hidden; /* 화면 밖으로 나가는 부분 숨김 */
+    position: relative;
+}
+
+.banner {
+    width: 598px;
+    height:430px;
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* 부드럽게 이동 */
+    transform: translateX(0); /* 초기 위치 */
+}
+
+.banner-image {
+    width: 598px; /* 이미지 너비 */
+    height: 430px; /* 이미지 높이 */
+    object-fit: cover; /* 이미지 비율 유지 */
+}
+
+/* 배너 컨테이너에 hover 시 텍스트와 흐림 효과 */
+.banner-container:hover .banner-image {
+    filter: blur(5px); /* 배너 이미지 흐리게 */
+}
+
+.overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    display: none; /* 처음엔 숨기기 */
+}
+
+.overlay-text {
+    font-size: 18px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+}
+
+/* 배너 컨테이너에 마우스를 올리면 텍스트 보이기 */
+.banner-container:hover .overlay {
+    display: block; /* hover 시 텍스트 보이기 */
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
