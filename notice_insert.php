@@ -2,9 +2,6 @@
 include 'config/db.php';
 session_start();
 
-// 오류 출력 활성화 (개발 환경에서만 활성화)
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 
 // 로그인 확인
 if (!isset($_SESSION['id']) || !isset($_SESSION['name'])) {
@@ -22,7 +19,7 @@ if ($_SESSION['roll'] !== 'ADMIN') {
 }
 
 // POST 데이터 가져오기
-$subject = $_POST['title'] ?? null;
+$title = $_POST['title'] ?? null;
 $content = $_POST['content'] ?? null;
 
 // 데이터 유효성 검사
@@ -32,14 +29,14 @@ if (!$subject || !$content) {
 }
 
 // MySQL 데이터베이스에 데이터 삽입
-$subject = mysqli_real_escape_string($conn, $subject); // 제목 escaping
+$title = mysqli_real_escape_string($conn, $title); // 제목 escaping
 $content = mysqli_real_escape_string($conn, $content); // 내용 escaping
 
 try {
     // SQL 쿼리 생성
     $sql = "
         INSERT INTO tbl_notice (title, content, reg_date, user_id, hit)
-        VALUES ('$subject', '$content', NOW(), '$user_id', 0)";
+        VALUES ('$title', '$content', NOW(), '$user_id', 0)";
 
     // 쿼리 실행
     if (mysqli_query($conn, $sql)) {

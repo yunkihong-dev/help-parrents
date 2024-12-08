@@ -19,6 +19,5 @@
 
 	<!-- 모달 동작을 위한 JavaScript -->
 	<script src="./js/modal.js"></script>
-	<script src="./js/banner.js"></script>
 </body>
 </html>

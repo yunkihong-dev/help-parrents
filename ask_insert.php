@@ -10,7 +10,7 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['name'])) {
 $user_id = $_SESSION['id'];
 $username = $_SESSION['name'];
 
-$subject = $_POST['title'] ?? null;
+$title = $_POST['title'] ?? null;
 $content = $_POST['content'] ?? null;
 
 if (!$subject || !$content) {
@@ -18,13 +18,13 @@ if (!$subject || !$content) {
     exit;
 }
 
-$subject = mysqli_real_escape_string($conn, $subject); // 제목 escaping
+$title = mysqli_real_escape_string($conn, $title); // 제목 escaping
 $content = mysqli_real_escape_string($conn, $content); // 내용 escaping
 
 try {
     $sql = "
         INSERT INTO tbl_opinion (title, content,likes,  reg_date, user_id, hit)
-        VALUES ('$subject', '$content',0,  NOW(), '$user_id', 0)";
+        VALUES ('$title', '$content', 0,  NOW(), '$user_id', 0)";
 
     // 쿼리 실행
     if (mysqli_query($conn, $sql)) {

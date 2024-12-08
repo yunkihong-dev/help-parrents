@@ -5,7 +5,7 @@
     $password = $_POST['password'] ;
     $nickname = $_POST['nickname'] ;
 
-    $sql = "INSERT INTO tbl_user (user_email, user_password, user_nickname, user_roll) VALUES('$email', '$password', '$nickname', 'user')";
+    $sql = "INSERT INTO tbl_user (user_email, user_password, user_nickname, user_roll) VALUES('$email', '$password', '$nickname', 'USER')";
 	
     mysqli_query($conn, $sql);
     mysqli_close($conn);     
