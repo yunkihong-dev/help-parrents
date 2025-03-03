@@ -60,12 +60,10 @@
 <code>
 	/tini-project
 	├── /css                # CSS 파일 (스타일)
-	├── /images             # 이미지 파일
+	├── /img                # 이미지 파일
 	├── /js                 # JavaScript 파일
 	├── /config             # DB 설정 파일
-	├── /public             # 공개 폴더 (웹에서 접근 가능한 파일들)
-	├── /templates          # HTML 템플릿 파일
-	├── /uploads            # 업로드된 파일 저장 폴더
-	└── /index.php          # 메인 페이지
+	├── /files              # 업로드된 파일 저장 폴더
+	└── /TINi_index.php          # 메인 페이지
 </code>
 </pre>
